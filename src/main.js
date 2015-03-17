@@ -1,6 +1,3 @@
-"use strict";
-/*global THREE, window */
-
 var VIEWER = VIEWER || {};
 
 VIEWER.scene = new THREE.Scene();
@@ -11,7 +8,7 @@ VIEWER.cameraPivot = new THREE.Object3D();
 VIEWER.objects = []; //for all THREE.mesh
 
 VIEWER.main = function () {
-
+    "use strict";
     // Adding a camera pivot in origin for keyboard rotation
     VIEWER.scene.add(VIEWER.cameraPivot);
     VIEWER.cameraPivot.add(VIEWER.camera);
@@ -20,7 +17,6 @@ VIEWER.main = function () {
     VIEWER.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(VIEWER.renderer.domElement);
     VIEWER.renderer.shadowMapEnabled = true;
-    
     //add listeners
     window.addEventListener('resize', VIEWER.event.onWindowResize, false);
     //Drag and drop object file on canvas
