@@ -8,10 +8,11 @@ VIEWER.renderer = new THREE.WebGLRenderer();
 VIEWER.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 40000);
 VIEWER.cameraPivot = new THREE.Object3D();
 
-VIEWER.objects = [];
+VIEWER.objects = []; //for all THREE.mesh
 
 VIEWER.main = function () {
 
+    // Adding a camera pivot in origin for keyboard rotation
     VIEWER.scene.add(VIEWER.cameraPivot);
     VIEWER.cameraPivot.add(VIEWER.camera);
 
@@ -22,7 +23,9 @@ VIEWER.main = function () {
     
     //add listeners
     window.addEventListener('resize', VIEWER.event.onWindowResize, false);
-    VIEWER.renderer.domElement.addEventListener("dragover", function (e) {e.preventDefault(); }, true);
+    //Drag and drop object file on canvas
+    VIEWER.renderer.domElement.addEventListener("dragover", function (e) {
+        e.preventDefault(); }, true);
     VIEWER.renderer.domElement.addEventListener("drop", function (e) {
         e.preventDefault();
         VIEWER.event.loadObject(e.dataTransfer.files[0]);
@@ -40,7 +43,6 @@ VIEWER.main = function () {
     spotLight.castShadow = true;
     spotLight.shadowMapWidth = 1024;
     spotLight.shadowMapHeight = 1024;
-
     spotLight.shadowCameraNear = 50;
     spotLight.shadowCameraFar = 30000;
     spotLight.shadowCameraFov = 30;
@@ -54,7 +56,7 @@ VIEWER.main = function () {
 
     var render = function () {
         requestAnimationFrame(render);
-        
+
         VIEWER.renderer.render(VIEWER.scene, VIEWER.camera);
     };
     render();

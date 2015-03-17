@@ -13,6 +13,9 @@ VIEWER.event = {
 
     },
 
+    /**
+    * Temporary keyboard interaction, untill leap motion part is done.
+    */
     keyHandler: function (e) {
         if (e.keyCode === 39) {
             VIEWER.cameraPivot.rotation.y += 0.05;
@@ -22,6 +25,11 @@ VIEWER.event = {
         }
     },
 
+    /**
+    * Given a .m object file, this function will get vertices, normals
+    * and indices and create a THREE.mesh and put it in the VIEWER.objects
+    * array
+    */
     loadObject:  function (file) {
 
         var reader = new FileReader();
