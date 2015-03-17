@@ -1,5 +1,5 @@
 # model_viewer 
-A 3D model viewer with Leap Motion interaction. This is made for a course in Human Computer Interaction at Nanyang Technological University in Singapore. The assignment stated that the Model Viewer should be able to load two given object files with a certain format (see below).
+A webGL 3D model viewer with Leap Motion interaction. This is made for a course in Human Computer Interaction at Nanyang Technological University in Singapore. The assignment stated that the Model Viewer should be able to load two given object files with a certain format (see below).
 
 ```
 Vertex 1  0.0174077 0.0764197 0.0626345 {normal=(0.0502809 0.839018 0.541776)}
@@ -15,13 +15,10 @@ Face 2  2273 10380 10377
 Face 3  10380 3539 32410
 Face 4  10377 32410 8287
 Face 5  32410 32409 18408
-Face 6  8286 18408 32409
-Face 7  18408 8287 32410
-Face 8  32409 32410 3539
-Face 9  11186 11187 26174
 								.
 								.
 								.							
 ```
 
 The example objects are in the objects folder. Drag and drop the files over the canvas to load the objects.
+Project made with the THREE.js framework.
