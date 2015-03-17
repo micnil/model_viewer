@@ -41,7 +41,10 @@ VIEWER.event = {
                 vertices = new Float32Array(verticeLines.length * 3),
                 normals = new Float32Array(verticeLines.length * 3),
                 indices = new Uint32Array(faceLines.length * 3),
+                objectMaxValues = [Number.MIN_VALUE, Number.MIN_VALUE, Number.MIN_VALUE], // [xMax, yMax, zMax]
+                objectMinValues = [Number.MAX_VALUE,Number.MAX_VALUE,Number.MAX_VALUE], // [xMin, yMin, zMin]
                 numbers;
+
 
             //get all vertices and normals from file
             for (var i = 0; i<verticeLines.length; i++) {
@@ -50,8 +53,16 @@ VIEWER.event = {
                 numbers = numbers.map(parseFloat);
 
                 vertices[i * 3 + 0] = numbers[1];
+                if (objectMaxValues[0]<numbers[1]) {objectMaxValues[0] = numbers[1]; }
+                if (objectMinValues[0]>numbers[1]) {objectMinValues[0] = numbers[1]; }
+
                 vertices[i * 3 + 1] = numbers[2];
+                if (objectMaxValues[1]<numbers[2]) {objectMaxValues[1] = numbers[2]; }
+                if (objectMinValues[1]>numbers[2]) {objectMinValues[1] = numbers[2]; }
+
                 vertices[i * 3 + 2] = numbers[3];
+                if (objectMaxValues[2]<numbers[3]) {objectMaxValues[2] = numbers[3]; }
+                if (objectMinValues[2]>numbers[3]) {objectMinValues[2] = numbers[3]; }
 
                 normals[i * 3 + 0] = numbers[4];
                 normals[i * 3 + 1] = numbers[5];
@@ -86,6 +97,7 @@ VIEWER.event = {
 
             VIEWER.scene.add(mesh);
             VIEWER.objects.push(mesh);
+            VIEWER.focusCamera(objectMaxValues, objectMinValues);
 
             console.log("finished loading");
         };

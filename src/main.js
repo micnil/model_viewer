@@ -44,16 +44,29 @@ VIEWER.main = function () {
     spotLight.shadowCameraFov = 30;
     VIEWER.scene.add(spotLight);
 
-
-    //setup camera
-    VIEWER.camera.position.set(0.3, 0.3, 0.3);
-    VIEWER.camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-
     var render = function () {
         requestAnimationFrame(render);
 
         VIEWER.renderer.render(VIEWER.scene, VIEWER.camera);
     };
     render();
+};
+
+/**
+ * To focus the camera on a object.
+ * @param  {Array} objectMaxValues Array with 3 elements
+ * corresponding to the max values of each vertice component
+ * @param  {Array} objectMinValues objectMaxValues Array with 3 elements
+ * corresponding to the min values of each vertice component
+ */
+VIEWER.focusCamera = function (objectMaxValues, objectMinValues) {
+    "use strict";
+    //using The Law of Sines
+
+    var distanceFromCenter = Math.abs(((objectMaxValues[1] - objectMinValues[1]) / Math.sin(VIEWER.camera.fov)) * Math.sin((180 - VIEWER.camera.fov)/2))*2,
+        center = new THREE.Vector3((objectMaxValues[0] - objectMinValues[0])/2, (objectMaxValues[1] - objectMinValues[1])/2, (objectMaxValues[2] - objectMinValues[2])/2);
+
+    VIEWER.cameraPivot.position.copy(center);
+    VIEWER.camera.position.set(distanceFromCenter/3, distanceFromCenter/3, distanceFromCenter);
+    VIEWER.camera.lookAt(new THREE.Vector3(0, 0, 0));
 };
