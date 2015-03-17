@@ -1,40 +1,41 @@
 "use strict";
+/*global THREE, VIEWER, window */
+/*jslint indent: 4, maxerr: 50, vars: true, regexp: true, sloppy: true */
 
 VIEWER.event = {
 
-    onWindowResize: function (){
+    onWindowResize: function () {
 
         VIEWER.camera.aspect = (window.innerWidth / window.innerHeight);
         VIEWER.camera.updateProjectionMatrix();
 
-        VIEWER.renderer.setSize( window.innerWidth, window.innerHeight );
+        VIEWER.renderer.setSize(window.innerWidth, window.innerHeight);
 
     },
 
-    keyHandler: function (e){
-        if(e.keyCode === 39){
+    keyHandler: function (e) {
+        if (e.keyCode === 39) {
             VIEWER.cameraPivot.rotation.y += 0.05;
         }
-        if(e.keyCode === 37){
+        if (e.keyCode === 37) {
             VIEWER.cameraPivot.rotation.y -= 0.05;
         }
     },
 
-    loadObject:  function (file){
+    loadObject:  function (file) {
 
         var reader = new FileReader();
 
-        reader.onload = function(){
-            
+        reader.onload = function () {
             var fileInput = reader.result,
                 verticeLines = fileInput.match(/Vertex.*(\n)/g),
                 faceLines = fileInput.match(/Face.*(\n)/g),
-                vertices = new Float32Array( verticeLines.length * 3 ),
-                normals = new Float32Array( verticeLines.length * 3 ),
-                indices = new Uint32Array( faceLines.length * 3 ),
+                vertices = new Float32Array(verticeLines.length * 3),
+                normals = new Float32Array(verticeLines.length * 3),
+                indices = new Uint32Array(faceLines.length * 3),
                 numbers;
 
-            for(var i = 0; i<verticeLines.length; i++){
+            for (var i = 0; i<verticeLines.length; i++) {
 
                 numbers = verticeLines[i].match(/[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/g);
                 numbers = numbers.map(parseFloat);
@@ -48,7 +49,7 @@ VIEWER.event = {
                 normals[i * 3 + 2] = numbers[6];
             }
 
-            for(i = 0; i<faceLines.length;i++){
+            for (i = 0; i<faceLines.length; i++) {
 
                 numbers = faceLines[i].match(/[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/g);
                 numbers = numbers.map(Number);
@@ -58,20 +59,24 @@ VIEWER.event = {
                 indices[i * 3 + 2] = numbers[3] - 1;
             }
 
-            var geometry = new THREE.BufferGeometry();
+            var material = new THREE.MeshPhongMaterial( { 
+                color: 0xdddddd, 
+                specular: 0x000000, 
+                shininess: 10, 
+                shading: THREE.SmoothShading } ),
+                geometry = new THREE.BufferGeometry();
             geometry.addAttribute( 'index', new THREE.BufferAttribute( indices, 1 ) );
             geometry.addAttribute( 'position', new THREE.BufferAttribute( vertices, 3 ) );
             geometry.addAttribute( 'normal', new THREE.BufferAttribute( normals, 3 ) );
 
-            var material = new THREE.MeshPhongMaterial( { color: 0xdddddd, specular: 0x000000, shininess: 10, shading: THREE.SmoothShading } ),
-                mesh = new THREE.Mesh( geometry, material );
+            var mesh = new THREE.Mesh( geometry, material );
             mesh.castShadow = false;
             mesh.receiveShadow = true;
 
             VIEWER.scene.add(mesh);
             VIEWER.objects.push(mesh);
 
-            console.log("finished");
+            console.log("finished loading");
         };
 
         reader.readAsText(file);
