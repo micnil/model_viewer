@@ -9,6 +9,10 @@ VIEWER.objects = []; //for all THREE.mesh
 
 VIEWER.main = function () {
     "use strict";
+
+    var axisHelper = new THREE.AxisHelper(0.02),
+        axisPosition = new THREE.Object3D();
+
     // Adding a camera pivot in origin for keyboard rotation
     VIEWER.scene.add(VIEWER.cameraPivot);
     VIEWER.cameraPivot.add(VIEWER.camera);
@@ -17,8 +21,10 @@ VIEWER.main = function () {
     VIEWER.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(VIEWER.renderer.domElement);
     VIEWER.renderer.shadowMapEnabled = true;
+
     //add listeners
-    window.addEventListener('resize', VIEWER.event.onWindowResize, false);
+    window.addEventListener('resize', function (){
+        VIEWER.event.onWindowResize(axisPosition);}, false);
     //Drag and drop object file on canvas
     VIEWER.renderer.domElement.addEventListener("dragover", function (e) {
         e.preventDefault(); }, true);
@@ -27,6 +33,10 @@ VIEWER.main = function () {
         VIEWER.event.loadObject(e.dataTransfer.files[0]);
     }, true);
     window.addEventListener('keydown', VIEWER.event.keyHandler, true);
+
+    //add reference grid
+    var gridHelper = new THREE.GridHelper(50, 2);
+    VIEWER.scene.add( gridHelper );
 
     // add subtle ambient lighting
     var ambientLight = new THREE.AmbientLight(0x222222);
@@ -44,8 +54,19 @@ VIEWER.main = function () {
     spotLight.shadowCameraFov = 30;
     VIEWER.scene.add(spotLight);
 
+    VIEWER.scene.add(axisHelper);
+    VIEWER.camera.add(axisPosition);
+    axisPosition.position.set(0.8, 0.8, 0.5);
+    axisPosition.position.unproject(VIEWER.camera);
+
+    //setting up camera
+    VIEWER.camera.position.set(50, 50, 50);
+    VIEWER.camera.lookAt(new THREE.Vector3(0, 0, 0));
+
     var render = function () {
         requestAnimationFrame(render);
+
+        axisHelper.position.setFromMatrixPosition(axisPosition.matrixWorld);
 
         VIEWER.renderer.render(VIEWER.scene, VIEWER.camera);
     };
@@ -62,9 +83,12 @@ VIEWER.main = function () {
 VIEWER.focusCamera = function (objectMaxValues, objectMinValues) {
     "use strict";
     //using The Law of Sines
-
-    var distanceFromCenter = Math.abs(((objectMaxValues[1] - objectMinValues[1]) / Math.sin(VIEWER.camera.fov)) * Math.sin((180 - VIEWER.camera.fov)/2))*2,
-        center = new THREE.Vector3((objectMaxValues[0] - objectMinValues[0])/2, (objectMaxValues[1] - objectMinValues[1])/2, (objectMaxValues[2] - objectMinValues[2])/2);
+    var distanceFromCenter = Math.abs(((objectMaxValues[1] - objectMinValues[1]) /
+        Math.sin(VIEWER.camera.fov)) * Math.sin((180 - VIEWER.camera.fov)/2))*2,
+        center = new THREE.Vector3(
+            (objectMaxValues[0] - objectMinValues[0])/2,
+            (objectMaxValues[1] - objectMinValues[1])/2,
+            (objectMaxValues[2] - objectMinValues[2])/2);
 
     VIEWER.cameraPivot.position.copy(center);
     VIEWER.camera.position.set(distanceFromCenter/3, distanceFromCenter/3, distanceFromCenter);

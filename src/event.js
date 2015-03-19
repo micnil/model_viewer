@@ -1,12 +1,14 @@
 VIEWER.event = {
 
-    onWindowResize: function () {
+    onWindowResize: function (axisPosition) {
         "use strict";
         VIEWER.camera.aspect = (window.innerWidth / window.innerHeight);
         VIEWER.camera.updateProjectionMatrix();
 
         VIEWER.renderer.setSize(window.innerWidth, window.innerHeight);
 
+        //TODO repositioning the axishelper
+        console.log(axisPosition.position);
     },
 
     /**
@@ -17,9 +19,11 @@ VIEWER.event = {
         "use strict";
         if (e.keyCode === 39) {
             VIEWER.cameraPivot.rotation.y += 0.05;
+            VIEWER.cameraPivot.updateMatrixWorld();
         }
         if (e.keyCode === 37) {
             VIEWER.cameraPivot.rotation.y -= 0.05;
+            VIEWER.cameraPivot.updateMatrixWorld();
         }
     },
 
