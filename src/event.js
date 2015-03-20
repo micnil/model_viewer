@@ -8,7 +8,7 @@ VIEWER.event = {
         VIEWER.renderer.setSize(window.innerWidth, window.innerHeight);
 
         //TODO repositioning the axishelper
-        console.log(axisPosition.position);
+        //console.log(axisPosition.position);
     },
 
     /**

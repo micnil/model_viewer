@@ -4,11 +4,15 @@
 		<meta charset="utf-8"/>
 		<title>3D Model Viewer</title>
 		<script src="vendors/three.min.js"></script>
+		<script src="vendors/leap-0.6.4.min.js"></script>
 		<script type="text/javascript" src="src/main.js"></script>
 		<script type="text/javascript" src="src/event.js"></script>
 		<link rel="stylesheet" href="style.css">
 	</head>
 	<body onload="VIEWER.main()">
-	<div id = "info">Drop object.m file on the canvas to load. Interact with Leap Motion controller.</div>
+	<div id = "info">
+		<p id = "instructions">Drop object.m file on the canvas to load. Interact with Leap Motion controller.</p>
+		<p id = "status">Leap motion: not connected</p>
+	</div>
 	</body>
 </html>
