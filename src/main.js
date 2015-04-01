@@ -14,9 +14,8 @@ VIEWER.main = function () {
     var axisHelper = new THREE.AxisHelper(0.02),
         axisPosition = new THREE.Object3D();
 
-    // Adding a camera pivot in origin for keyboard rotation
-    VIEWER.scene.add(VIEWER.cameraPivot);
-    VIEWER.cameraPivot.add(VIEWER.camera);
+    VIEWER.scene.add(VIEWER.camera);
+
 
     //initializing renderer
     VIEWER.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -61,9 +60,8 @@ VIEWER.main = function () {
     axisPosition.position.unproject(VIEWER.camera);
 
     //setting up camera
-    VIEWER.camera.position.set(0, 0, -5);
-    VIEWER.cameraPivot.position.set(50, 50, 50);
-    VIEWER.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    VIEWER.camera.position.set(0, 10, 30);
+    VIEWER.camera.rotateOnAxis(new THREE.Vector3(1,0,0), -0.6);
 
     var render = function () {
         requestAnimationFrame(render);
