@@ -79,7 +79,7 @@ VIEWER.navigation = (function () {
                 handleFlight(hand);
             } else if (navigationMode === "select") {
                 //Pointing
-                //handleSelect(hand);
+                handleSelect(hand);
             }
         }
     }
@@ -107,6 +107,7 @@ VIEWER.navigation = (function () {
         var pos = hand.palmPosition,
             spherePos = interactionSphere.normalizePoint(pos),
             normSpherePos = spherePos.clone().normalize(),
+            speed = 0.2,
             m;
 
         //Translations
@@ -118,20 +119,19 @@ VIEWER.navigation = (function () {
             m.getInverse(m);
 
             var forward = new THREE.Vector3(0,0,1).applyAxisAngle(new THREE.Vector3(0,1,0), yRad);
-            VIEWER.camera.translateOnAxis(forward.transformDirection(m), movement.z);
+            VIEWER.camera.translateOnAxis(forward.transformDirection(m), movement.z*speed);
 
             var up = new THREE.Vector3(0,1,0).transformDirection(m);
-            VIEWER.camera.translateOnAxis(up, movement.y);
+            VIEWER.camera.translateOnAxis(up, movement.y*speed);
 
             var right = new THREE.Vector3(1,0,0);
-            VIEWER.camera.translateOnAxis(right, movement.x);
+            VIEWER.camera.translateOnAxis(right, movement.x*speed);
         }
 
         VIEWER.camera.updateMatrix();
         VIEWER.camera.updateMatrixWorld();
 
         //Rotations
-
         // Pitch
         m = VIEWER.camera.matrix.clone();
         var xRad = new THREE.Euler().setFromRotationMatrix(m,"YZX").x;
@@ -153,6 +153,15 @@ VIEWER.navigation = (function () {
             m.getInverse(m)
             VIEWER.camera.rotateOnAxis(new THREE.Vector3(0, -1, 0).transformDirection(m), (hand.yaw()+0.15)*0.1);
         }
+    }
+
+    /**
+     * when hand in positioned select mode (pointing with index finger)
+     * this should take the selecting of objects
+     * @param  hand hand object as provided by leap motion
+     */
+    function handleSelect(hand){
+
     }
 
 

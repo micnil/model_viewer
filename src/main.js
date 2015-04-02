@@ -14,7 +14,8 @@ VIEWER.main = function () {
     var axisHelper = new THREE.AxisHelper(0.02),
         axisPosition = new THREE.Object3D();
 
-    VIEWER.scene.add(VIEWER.camera);
+    VIEWER.cameraPivot.add(VIEWER.camera)
+    VIEWER.scene.add(VIEWER.cameraPivot);
 
 
     //initializing renderer
@@ -35,7 +36,7 @@ VIEWER.main = function () {
     window.addEventListener('keydown', VIEWER.event.keyHandler, true);
 
     //add reference grid
-    var gridHelper = new THREE.GridHelper(50, 2);
+    var gridHelper = new THREE.GridHelper(25, 1);
     VIEWER.scene.add( gridHelper );
 
     // add subtle ambient lighting
@@ -60,8 +61,11 @@ VIEWER.main = function () {
     axisPosition.position.unproject(VIEWER.camera);
 
     //setting up camera
-    VIEWER.camera.position.set(0, 10, 30);
+    VIEWER.camera.position.set(10, 20, 30);
+    VIEWER.camera.position.set(1, 2, 3);
+    VIEWER.camera.rotateOnAxis(new THREE.Vector3(0,1,0), 0.2);
     VIEWER.camera.rotateOnAxis(new THREE.Vector3(1,0,0), -0.6);
+    //VIEWER.camera.lookAt(0,0,0);
 
     var render = function () {
         requestAnimationFrame(render);

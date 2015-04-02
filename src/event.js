@@ -73,6 +73,11 @@ VIEWER.event = {
                 normals[i * 3 + 2] = numbers[6];
             }
 
+            //rescale object to reasonable size
+            for (i = 0; i<vertices.length; i++){
+                vertices[i] /= objectMaxValues[1];
+            }
+
             //get all indices from file
             for (i = 0; i<faceLines.length; i++) {
 
@@ -101,7 +106,7 @@ VIEWER.event = {
 
             VIEWER.scene.add(mesh);
             VIEWER.objects.push(mesh);
-            VIEWER.focusCamera(objectMaxValues, objectMinValues);
+            //VIEWER.focusCamera(objectMaxValues, objectMinValues);
 
             console.log("finished loading");
         };
