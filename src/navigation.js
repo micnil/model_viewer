@@ -8,7 +8,7 @@ VIEWER.navigation = (function () {
         interactionSphere = {
             //in millimeters
             center: 200,
-            radius: 80,
+            radius: 60,
             normalizePoint: function (point) {
                 return new THREE.Vector3(point[0] / this.radius,
                     (point[1] - this.center) / this.radius,
@@ -107,7 +107,7 @@ VIEWER.navigation = (function () {
         var pos = hand.palmPosition,
             spherePos = interactionSphere.normalizePoint(pos),
             normSpherePos = spherePos.clone().normalize(),
-            speed = 0.2,
+            speed = 0.1,
             m;
 
         //Translations

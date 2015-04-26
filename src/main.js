@@ -36,7 +36,7 @@ VIEWER.main = function () {
     window.addEventListener('keydown', VIEWER.event.keyHandler, true);
 
     //add reference grid
-    var gridHelper = new THREE.GridHelper(25, 1);
+    var gridHelper = new THREE.GridHelper(25, 0.5);
     VIEWER.scene.add( gridHelper );
 
     // add subtle ambient lighting
